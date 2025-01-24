@@ -30,9 +30,16 @@ const updateUserStatus = async (userId, status) => {
     return result;
 };
 
+const deleteUsers = async (userIds) => {
+    const query = `DELETE FROM users WHERE id IN (${userIds.map(() => '?').join(', ')})`;
+    const [result] = await db.execute(query, userIds);
+    return result;
+};
+
 module.exports = {
     registerUser,
     getUserByEmail,
     getAllUsers,
     updateUserStatus,
+    deleteUsers
 };

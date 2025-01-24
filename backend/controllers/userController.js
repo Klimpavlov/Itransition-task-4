@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { registerUser, getUserByEmail, getAllUsers, updateUserStatus } = require('../models/userModel');
+const { registerUser, getUserByEmail, getAllUsers, updateUserStatus, deleteUsers } = require('../models/userModel');
 
 const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -76,4 +76,21 @@ const updateStatus = async (req, res) => {
     }
 };
 
-module.exports = { register, login, listUsers, updateStatus };
+const deleteUserHandler = async (req, res) => {
+    const { userIds } = req.body; // Передаём массив userIds в запросе
+
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+        return res.status(400).json({ error: 'Invalid or empty userIds array' });
+    }
+
+    try {
+        await deleteUsers(userIds);
+        res.json({ message: 'Users deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting users:', error);
+        res.status(500).json({ error: 'Failed to delete users' });
+    }
+};
+
+
+module.exports = { register, login, listUsers, updateStatus, deleteUserHandler };
