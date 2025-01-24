@@ -18,8 +18,19 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        console.log('Login attempt:', { email });
         const user = await getUserByEmail(email);
-        if (!user || !(await bcrypt.compare(password, user.password))) {
+        console.log('Fetched user:', user);
+
+        if (!user) {
+            console.log('User not found');
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        console.log('Password match:', isPasswordCorrect);
+
+        if (!isPasswordCorrect) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
@@ -27,12 +38,17 @@ const login = async (req, res) => {
             return res.status(403).json({ error: 'User is blocked' });
         }
 
+        console.log('JWT_SECRET:', process.env.JWT_SECRET);
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        console.log('Generated token:', token);
+
         res.json({ token });
     } catch (error) {
+        console.error('Login error:', error);
         res.status(500).json({ error: 'Failed to login' });
     }
 };
+
 
 const listUsers = async (req, res) => {
     try {
