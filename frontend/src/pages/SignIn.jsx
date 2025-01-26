@@ -1,10 +1,14 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import postSignIn from "../api/signIn/signIn";
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
 
     const navigate = useNavigate();
 
@@ -14,11 +18,32 @@ const SignIn = () => {
     };
 
     const handleSignIn = async () => {
-        await postSignIn(email, password)
+        setError("");
+        setShowAlert(false);
+        await postSignIn(email, password, successRedirect, (errorMessage) => {
+            setError(errorMessage);
+            setShowAlert(true);
+
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
+        });
     };
+
+    const successRedirect = () => {
+        navigate("/")
+    }
+
+
     return (
         <>
             <section className="bg-gray-50 dark:bg-gray-900">
+                {showAlert && error && (
+                    <Alert severity="error" className="w-full absolute mt-4">
+                        <AlertTitle>Error</AlertTitle>
+                        {error}
+                    </Alert>
+                )}
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <a className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                         <img

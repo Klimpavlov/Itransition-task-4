@@ -4,7 +4,7 @@ const deleteUsers = async (userIds) => {
     console.log(userIds)
     try {
         await axios.delete("/api/users", {
-            userIds: userIds
+            data: { userIds: userIds }
         }).then(function (response) {
             console.log(response)
         })

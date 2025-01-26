@@ -22,24 +22,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/*<div>*/}
-        {/*    {*/}
-        {/*    !data ? "Loading" : data.map(user => (*/}
-        {/*        <div key={user.id}>*/}
-        {/*            <p>{user.id}</p>*/}
-        {/*            <p>{user.email}</p>*/}
-        {/*        </div>*/}
-        {/*    ))*/}
-        {/*}*/}
-        {/*</div>*/}
-          <Link to="/">homepage</Link>
-          <Link to="/signUp">signUp</Link>
-          <Link to="/signIn">signIn</Link>
       </header>
         <Routes>
             <Route path="/" element={<Homepage/>}/>
-            <Route path="/signUp" element={<SignUp/>}/>
-            <Route path="/signIn" element={<SignIn/>}/>
         </Routes>
     </div>
 

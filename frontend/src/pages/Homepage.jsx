@@ -1,17 +1,17 @@
-
 import EnhancedTable from "../components/table";
 import {getAllUsers} from "../api/users/getAllUsers";
 import {useEffect, useState} from "react";
 import ButtonUnblock from "../components/unblockButton";
 import ButtonBlock from "../components/blockButton";
-import blockUser from "../api/users/blockUser";
-import unBlockUser from "../api/users/unblockUser";
+import updateStatus from "../api/users/updateStatus";
+import deleteUsers from "../api/users/deleteUsers";
 
 const Homepage = () => {
 
     const token = localStorage.getItem('token');
     const [users, setUsers] = useState([]);
-    // const [userIds, setUserIds] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [userIds, setUserIds] = useState([]);
 
 
     async function getUsers() {
@@ -19,31 +19,45 @@ const Homepage = () => {
         const usersData = await getAllUsers(token);
         console.log(usersData)
         setUsers(usersData);
+        setIsLoading(false);
     }
 
     useEffect(() => {
         getUsers();
     }, []);
 
-    async function updateStatusBlock() {
-        await blockUser([7], token)
+    async function updateUserStatus(status) {
+        await updateStatus(userIds, status, token);
+        getUsers();
     }
 
-    async function updateStatusUnblock() {
-        await unBlockUser([7], token)
+    async function handleDeleteUsers() {
+        await deleteUsers(userIds);
+        console.log(userIds);
+        getUsers();
     }
+
+    const handleSelectedChange = (newSelected) => {
+        setUserIds(newSelected);
+    };
 
     return (
             <div>
                 <div className="flex ml-4 my-4">
                     <div className="px-2">
-                        <ButtonBlock text="Block" onClick={updateStatusBlock}/>
+                        <ButtonBlock text="Block" onClick={()=> updateUserStatus("blocked")}/>
                     </div>
                     <div className="px-2">
-                        <ButtonUnblock text="Unblock" onClick={updateStatusUnblock}/>
+                        <ButtonUnblock text="Unblock" onClick={()=> updateUserStatus("active")}/>
                     </div>
                 </div>
-                <EnhancedTable users={users}/>
+                {isLoading ? (
+                    <div>Loading...</div>
+                ) : (
+                    <EnhancedTable users={users}
+                                   onSelectedChange={handleSelectedChange}
+                                   onDelete={handleDeleteUsers}/>
+                )}
             </div>
     )
 }

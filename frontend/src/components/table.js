@@ -30,22 +30,6 @@ function createData(id, name, email, lastSeen) {
     };
 }
 
-// const rows = [
-//     createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
-//     createData(2, 'Donut', 452, 25.0, 51, 4.9),
-//     createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-//     createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-//     createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-//     createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
-//     createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-//     createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
-//     createData(9, 'KitKat', 518, 26.0, 65, 7.0),
-//     createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
-//     createData(11, 'Marshmallow', 318, 0, 81, 2.0),
-//     createData(12, 'Nougat', 360, 19.0, 9, 37.0),
-//     createData(13, 'Oreo', 437, 18.0, 63, 4.0),
-// ];
-
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -70,13 +54,13 @@ const headCells = [
         label: 'Name',
     },
     {
-        id: 'calories',
+        id: 'email',
         numeric: true,
         disablePadding: false,
         label: 'Email',
     },
     {
-        id: 'fat',
+        id: 'lastSeen',
         numeric: true,
         disablePadding: false,
         label: 'Last seen',
@@ -139,8 +123,13 @@ EnhancedTableHead.propTypes = {
     rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-    const { numSelected } = props;
+function EnhancedTableToolbar({ numSelected, onDelete }) {
+    // const { numSelected } = props;
+
+    const handleDeleteClick = () => {
+        onDelete(); // Вызываем переданную функцию удаления
+    };
+
     return (
         <Toolbar
             sx={[
@@ -170,13 +159,13 @@ function EnhancedTableToolbar(props) {
                     id="tableTitle"
                     component="div"
                 >
-                    Nutrition
+                    App
                 </Typography>
             )}
             {numSelected > 0 ? (
                 <Tooltip title="Delete">
-                    <IconButton>
-                        <DeleteIcon />
+                    <IconButton onClick={handleDeleteClick}>
+                        <DeleteIcon/>
                     </IconButton>
                 </Tooltip>
             ) : (
@@ -194,11 +183,8 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({users}) {
+export default function EnhancedTable({users, onSelectedChange, onDelete}) {
     console.log(users)
-
-    // const [rows, setRows] = useState([]);
-    // setRows(users.map(user => createData(user.id, user.name, user.email, user.last_login)));
 
     const rows = users.map(user => createData(user.id, user.name, user.email, user.last_login));
 
@@ -209,9 +195,10 @@ export default function EnhancedTable({users}) {
     const [dense, setDense] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    // if (!users || users.length === 0) {
-    //     return <div>Loading...</div>;
-    // }
+    const handleDelete = () => {
+        onDelete(selected);
+        setSelected([]);
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -223,9 +210,12 @@ export default function EnhancedTable({users}) {
         if (event.target.checked) {
             const newSelected = rows.map((n) => n.id);
             setSelected(newSelected);
+            console.log("Selected IDs:", newSelected);
+            onSelectedChange(newSelected);
             return;
         }
         setSelected([]);
+        console.log("Selected IDs: []");
     };
 
     const handleClick = (event, id) => {
@@ -245,6 +235,8 @@ export default function EnhancedTable({users}) {
             );
         }
         setSelected(newSelected);
+        console.log("Selected IDs:", newSelected);
+        onSelectedChange(newSelected);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -275,7 +267,8 @@ export default function EnhancedTable({users}) {
     return (
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <EnhancedTableToolbar numSelected={selected.length}
+                                      onDelete={handleDelete}/>
                 <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}
@@ -324,7 +317,7 @@ export default function EnhancedTable({users}) {
                                             {row.name}
                                         </TableCell>
                                         <TableCell align="right">{row.email}</TableCell>
-                                        <TableCell align="right">{row.last_login}</TableCell>
+                                        <TableCell align="right">{row.last_login ? row.last_login : "long ago"}</TableCell>
                                     </TableRow>
                                 );
                             })}

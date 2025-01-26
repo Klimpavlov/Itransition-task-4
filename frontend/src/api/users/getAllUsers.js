@@ -9,7 +9,11 @@ export async function getAllUsers(token) {
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.error(error);
-        throw error;
+        if (error.response && error.response.status === 401) {
+            window.location.href = '/signIn';
+        } else {
+            console.error(error);
+            throw error;
+        }
     }
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const postSignIn = async (email, password) => {
+const postSignIn = async (email, password, successRedirect, setError) => {
     console.log(email, password)
     try {
         await axios.post("/api/login", {
@@ -11,10 +11,13 @@ const postSignIn = async (email, password) => {
             const token = response.data.token;
             localStorage.setItem('token', token);
             console.log(token)
+            successRedirect();
         })
     }
     catch (error) {
-        console.log(error);
+        console.log(error.response.data.error);
+        const errorMessage = error.response?.data?.error || "Something went wrong!";
+        setError(errorMessage);
     }
 
 }

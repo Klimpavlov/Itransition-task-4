@@ -1,13 +1,12 @@
 import axios from "axios";
 
-const unBlockUser = async (userIds, token) => {
-    console.log(userIds)
-    const active = "active";
-    console.log(active);
+const updateStatus = async (userIds, status, token) => {
+    console.log(userIds);
+    console.log(status);
     try {
         await axios.put("/api/users/status", {
             userIds: userIds,
-            status: active
+            status: status
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -22,4 +21,4 @@ const unBlockUser = async (userIds, token) => {
 
 }
 
-export default unBlockUser
+export default updateStatus
