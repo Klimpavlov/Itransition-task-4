@@ -1,9 +1,12 @@
 // import React, {useState, useEffect} from "react";
 import React from "react";
 import {Routes, Route, Link} from 'react-router-dom';
+
 import {Homepage} from './pages/Homepage'
 import {SignUp} from './pages/SignUp'
 import {SignIn} from './pages/SignIn'
+
+
 
 function App() {
     // const [data, setData] = useState(null);
@@ -39,6 +42,7 @@ function App() {
             <Route path="/signIn" element={<SignIn/>}/>
         </Routes>
     </div>
+
   );
 }
 

@@ -8,6 +8,9 @@ const postSignIn = async (email, password) => {
             password: password
         }).then(function (response) {
             console.log(response)
+            const token = response.data.token;
+            localStorage.setItem('token', token);
+            console.log(token)
         })
     }
     catch (error) {
