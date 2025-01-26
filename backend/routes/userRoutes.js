@@ -11,7 +11,7 @@ router.get('/users', authMiddleware, listUsers);
 router.put('/users/status', authMiddleware, updateStatus);
 
 // router.get('/users', listUsers);
-// router.put('/users/status', updateStatus);
+// router.put('/users/status', blockUser);
 
 router.delete('/users', deleteUserHandler);
 

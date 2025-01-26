@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import {useState, useMemo} from "react";
 
 function createData(id, name, email, lastSeen) {
     return {
@@ -201,16 +202,16 @@ export default function EnhancedTable({users}) {
 
     const rows = users.map(user => createData(user.id, user.name, user.email, user.last_login));
 
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('name');
-    const [selected, setSelected] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState('name');
+    const [selected, setSelected] = useState([]);
+    const [page, setPage] = useState(0);
+    const [dense, setDense] = useState(false);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    if (!users || users.length === 0) {
-        return <div>Loading...</div>;
-    }
+    // if (!users || users.length === 0) {
+    //     return <div>Loading...</div>;
+    // }
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -263,7 +264,7 @@ export default function EnhancedTable({users}) {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-    const visibleRows = React.useMemo(
+    const visibleRows = useMemo(
         () =>
             [...rows]
                 .sort(getComparator(order, orderBy))
