@@ -248,9 +248,9 @@ export default function EnhancedTable({users, onSelectedChange, onDelete}) {
         setPage(0);
     };
 
-    const handleChangeDense = (event) => {
-        setDense(event.target.checked);
-    };
+    // const handleChangeDense = (event) => {
+    //     setDense(event.target.checked);
+    // };
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
