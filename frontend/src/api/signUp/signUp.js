@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const postSignUp = async (name, email, password, successRedirect, setError) => {
     console.log(name, email, password)

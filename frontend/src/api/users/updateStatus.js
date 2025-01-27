@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const updateStatus = async (userIds, status, token, reloadPage) => {
     console.log(userIds);
