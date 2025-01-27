@@ -11,6 +11,8 @@ export async function getAllUsers(token) {
     } catch (error) {
         if (error.response && error.response.status === 401) {
             window.location.href = '/signIn';
+        } else if (error.response && error.response.data.error === "No users found") {
+            window.location.href = '/signUp';
         } else {
             console.error(error);
             throw error;

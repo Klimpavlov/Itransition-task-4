@@ -21,12 +21,13 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import {useState, useMemo} from "react";
 
-function createData(id, name, email, lastSeen) {
+function createData(id, name, email, lastSeen, status) {
     return {
         id,
         name,
         email,
-        lastSeen
+        lastSeen,
+        status
     };
 }
 
@@ -186,7 +187,7 @@ EnhancedTableToolbar.propTypes = {
 export default function EnhancedTable({users, onSelectedChange, onDelete}) {
     console.log(users)
 
-    const rows = users.map(user => createData(user.id, user.name, user.email, user.last_login));
+    const rows = users.map(user => createData(user.id, user.name, user.email, user.last_login, user.status));
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('name');
@@ -298,6 +299,10 @@ export default function EnhancedTable({users, onSelectedChange, onDelete}) {
                                         key={row.id}
                                         selected={isItemSelected}
                                         sx={{ cursor: 'pointer' }}
+                                        style={{
+                                            textDecoration: row.status === "blocked" ? "line-through" : "none",
+                                            color: row.status === "blocked" ? "red" : "inherit",
+                                        }}
                                     >
                                         <TableCell padding="checkbox">
                                             <Checkbox

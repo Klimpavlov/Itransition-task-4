@@ -5,6 +5,7 @@ import ButtonUnblock from "../components/unblockButton";
 import ButtonBlock from "../components/blockButton";
 import updateStatus from "../api/users/updateStatus";
 import deleteUsers from "../api/users/deleteUsers";
+import {useNavigate} from "react-router-dom";
 
 const Homepage = () => {
 
@@ -13,6 +14,7 @@ const Homepage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [userIds, setUserIds] = useState([]);
 
+    const navigate = useNavigate();
 
     async function getUsers() {
         // const accessToken =  Cookies.get('accessToken');
@@ -20,6 +22,7 @@ const Homepage = () => {
         console.log(usersData)
         setUsers(usersData);
         setIsLoading(false);
+
     }
 
     useEffect(() => {
@@ -27,12 +30,12 @@ const Homepage = () => {
     }, []);
 
     async function updateUserStatus(status) {
-        await updateStatus(userIds, status, token);
+        await updateStatus(userIds, status, token, successReload);
         getUsers();
     }
 
     async function handleDeleteUsers() {
-        await deleteUsers(userIds);
+        await deleteUsers(userIds, successReload);
         console.log(userIds);
         getUsers();
     }
@@ -40,6 +43,10 @@ const Homepage = () => {
     const handleSelectedChange = (newSelected) => {
         setUserIds(newSelected);
     };
+
+    const successReload = () => {
+        window.location.reload();
+    }
 
     return (
             <div>

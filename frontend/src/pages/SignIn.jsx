@@ -17,9 +17,20 @@ const SignIn = () => {
         navigate("/signUp");
     };
 
-    const handleSignIn = async () => {
+    const handleSignIn = async (e) => {
+        e.preventDefault();
         setError("");
         setShowAlert(false);
+
+        if (!email || !password) {
+            setError("Some fields are required.");
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
+            return;
+        }
+
         await postSignIn(email, password, successRedirect, (errorMessage) => {
             setError(errorMessage);
             setShowAlert(true);
@@ -94,8 +105,8 @@ const SignIn = () => {
                                     />
                                 </div>
                                 <button
-                                    // type="submit"
-                                    type="button"
+                                    type="submit"
+                                    // type="button"
                                     className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none
                                      focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5
                                       text-center dark:bg-blue-600 dark:hover:bg-blue-700"
