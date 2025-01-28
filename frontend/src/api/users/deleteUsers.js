@@ -1,9 +1,9 @@
-import axios from 'axios';
+import apiClient from "../apiClient/apiClient";
 
 const deleteUsers = async (userIds, reloadPage) => {
     console.log(userIds)
     try {
-        await axios.delete("/api/users", {
+        await apiClient.delete("/api/users", {
             data: { userIds: userIds }
         }).then(function (response) {
             console.log(response);

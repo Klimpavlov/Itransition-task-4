@@ -1,9 +1,9 @@
-import axios from 'axios';
+import apiClient from "../apiClient/apiClient";
 
 const postSignIn = async (email, password, successRedirect, setError) => {
     console.log(email, password)
     try {
-        await axios.post("/api/login", {
+        await apiClient.post("/api/login", {
             email: email,
             password: password
         }).then(function (response) {

@@ -1,7 +1,7 @@
-import axios from 'axios';
+import apiClient from "../apiClient/apiClient";
 export async function getAllUsers(token) {
     try {
-        const response = await axios.get('/api/users', {
+        const response = await apiClient.get(`/api/users`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

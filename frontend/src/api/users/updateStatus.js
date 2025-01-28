@@ -1,10 +1,10 @@
-import axios from 'axios';
+import apiClient from "../apiClient/apiClient";
 
 const updateStatus = async (userIds, status, token, reloadPage) => {
     console.log(userIds);
     console.log(status);
     try {
-        await axios.put("/api/users/status", {
+        await apiClient.put("/api/users/status", {
             userIds: userIds,
             status: status
         }, {

@@ -1,9 +1,9 @@
-import axios from 'axios';
+import apiClient from "../apiClient/apiClient";
 
 const postSignUp = async (name, email, password, successRedirect, setError) => {
     console.log(name, email, password)
     try {
-        await axios.post("/api/register", {
+        await apiClient.post("/api/register", {
             name: name,
             email: email,
             password: password
