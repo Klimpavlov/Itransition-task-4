@@ -12,6 +12,12 @@ const getUserByEmail = async (email) => {
     return rows[0];
 };
 
+const getUserById = async (id) => {
+    const query = 'SELECT id, name, email, status FROM users WHERE id = ?';
+    const [rows] = await db.execute(query, [id]);
+    return rows[0];
+};
+
 const getAllUsers = async () => {
     try {
         const query = 'SELECT id, name, email, last_login, status FROM users ORDER BY last_login DESC';
@@ -38,6 +44,7 @@ const deleteUsers = async (userIds) => {
 
 module.exports = {
     registerUser,
+    getUserById,
     getUserByEmail,
     getAllUsers,
     updateUserStatus,
