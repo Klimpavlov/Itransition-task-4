@@ -93,7 +93,7 @@ const updateStatus = async (req, res) => {
 };
 
 const deleteUserHandler = async (req, res) => {
-    const {userIds} = req.body; // Передаём массив userIds в запросе
+    const {userIds} = req.body;
 
     if (!Array.isArray(userIds) || userIds.length === 0) {
         return res.status(400).json({error: 'Invalid or empty userIds array'});
